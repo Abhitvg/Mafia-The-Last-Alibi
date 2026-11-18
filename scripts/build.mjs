@@ -1,0 +1,6 @@
+import { cp, mkdir, rm } from 'node:fs/promises';
+await rm('dist', { recursive: true, force: true });
+await mkdir('dist', { recursive: true });
+for (const file of ['index.html', 'styles.css']) await cp(file, `dist/${file}`);
+await cp('src/app.js', 'dist/app.js');
+console.log('Static frontend built into dist/. Netlify Functions are bundled by Netlify during deploy.');
