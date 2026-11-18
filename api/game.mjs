@@ -121,13 +121,44 @@ async function resolveStore() {
 }
 
 // ─────────────────────────────────────────────
-// Handler
+// Handler (supports Node.js (req, res) & Web Standard Request)
 // ─────────────────────────────────────────────
 let handler = null;
 
-export default async function (req) {
+export default async function (req, res) {
   if (!handler) {
     handler = createApi({ store: await resolveStore() });
   }
+
+  // Node.js Serverless runtime (Vercel standard)
+  if (res && typeof res.writeHead === 'function') {
+    let body = undefined;
+    if (req.body) {
+      body = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+    } else if (!['GET', 'HEAD'].includes(req.method)) {
+      body = await new Promise(resolve => {
+        let b = '';
+        req.on('data', chunk => (b += chunk));
+        req.on('end', () => resolve(b));
+      });
+    }
+
+    const host = req.headers.host || 'localhost';
+    const proto = req.headers['x-forwarded-proto'] || 'https';
+    const url = new URL(req.url, `${proto}://${host}`);
+
+    const webReq = new Request(url.toString(), {
+      method: req.method,
+      headers: req.headers,
+      body: body || undefined,
+    });
+
+    const webRes = await handler(webReq);
+    res.writeHead(webRes.status, Object.fromEntries(webRes.headers));
+    const text = await webRes.text();
+    return res.end(text);
+  }
+
+  // Edge / Web Standard runtime
   return handler(req);
 }
