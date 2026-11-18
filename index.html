@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111014" />
+  <meta name="description" content="Mafia: The Last Alibi — a real-time social deduction game for 4–8 players." />
+  <title>Mafia: The Last Alibi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="topbar"><a class="brand" href="/"><span class="brand-mark">✦</span><span>THE LAST <b>ALIBI</b></span></a><span class="top-note">A SOCIAL DEDUCTION GAME</span></header>
+  <main id="app" class="shell">
+    <section id="landing" class="landing">
+      <div class="hero-kicker"><span class="dot"></span> 4–8 PLAYERS · ONE ROOM · NO TRUST</div>
+      <h1>MAFIA:<br><em>THE LAST ALIBI</em></h1>
+      <p class="hero-copy">Every night leaves a question.<br>Every morning demands an answer.</p>
+      <div class="entry-card">
+        <div class="entry-tabs"><button class="tab active" data-tab="create">CREATE ROOM</button><button class="tab" data-tab="join">JOIN ROOM</button></div>
+        <form id="entry-form">
+          <label for="nickname">YOUR ALIAS</label><input id="nickname" maxlength="18" placeholder="e.g. The Night Owl" required autocomplete="nickname" />
+          <div id="join-code-wrap" class="hidden"><label for="room-code">SIX-CHARACTER ROOM CODE</label><input id="room-code" maxlength="6" placeholder="A7K9QX" autocomplete="off" /></div>
+          <button class="button primary" id="entry-submit" type="submit">CREATE PRIVATE ROOM <span>↗</span></button>
+        </form>
+        <p class="entry-foot">No account needed. Share the code with your crew.</p>
+      </div>
+      <div class="hero-bottom"><span>01 — DECEIVE</span><span>02 — INVESTIGATE</span><span>03 — SURVIVE</span></div>
+    </section>
+    <section id="game" class="hidden">
+      <div class="game-head"><div><div class="eyebrow">PRIVATE GAME ROOM</div><div class="room-code-line">ROOM <strong id="room-code-display">——</strong><button id="copy-code" class="icon-button" title="Copy room code">▢</button></div></div><div class="phase-pill" id="phase-pill">LOBBY</div></div>
+      <div id="notice" class="notice hidden" role="status"></div>
+      <div id="lobby-view" class="layout">
+        <section class="panel lobby-main"><div class="panel-head"><div><div class="eyebrow">THE GUEST LIST</div><h2>Gather your suspects.</h2></div><div class="count"><b id="player-count">1</b><span>/ 8</span></div></div><div id="lobby-players" class="player-list"></div><div class="lobby-actions"><button id="ready-button" class="button secondary">✓ READY</button><button id="start-button" class="button primary" disabled>BEGIN THE NIGHT ↗</button></div><p class="muted small">The host can begin once 4–8 players have joined and everyone is ready.</p></section>
+        <aside class="panel invite-panel"><div class="eyebrow">INVITE YOUR CREW</div><div class="invite-code" id="invite-code">——</div><button id="share-button" class="button secondary full">COPY INVITE LINK ↗</button><div class="rule-mini"><span>THE RULES</span><p>One room. Secret roles. A town full of suspects. Find the Mafia before they find you.</p></div></aside>
+      </div>
+      <div id="playing-view" class="hidden">
+        <div class="status-banner"><div><div class="eyebrow" id="round-label">NIGHT 1</div><h2 id="phase-title">Night has fallen.</h2><p id="phase-description">The town is asleep. Your choices stay secret.</p></div><div class="timer" id="timer">00:30</div></div>
+        <div class="role-strip"><div class="role-emblem" id="role-emblem">?</div><div><div class="eyebrow">YOUR SECRET IDENTITY</div><div class="role-name" id="role-name">Awaiting assignment</div><div class="role-desc" id="role-desc">Your role is visible only to you.</div></div></div>
+        <div class="game-grid">
+          <section class="panel action-panel"><div class="panel-head"><div><div class="eyebrow">YOUR MOVE</div><h2 id="action-heading">Stay alert.</h2></div></div><div id="action-content"></div></section>
+          <section class="panel players-panel"><div class="panel-head"><div><div class="eyebrow">STILL IN THE GAME</div><h2>Players</h2></div></div><div id="playing-players" class="player-list compact"></div></section>
+        </div>
+        <section class="panel chat-panel"><div class="panel-head"><div><div class="eyebrow">THE TOWN SQUARE</div><h2>Whispers & accusations</h2></div><span class="live-label"><i></i> LIVE</span></div><div id="chat-messages" class="chat-messages"></div><form id="chat-form" class="chat-form"><input id="chat-input" maxlength="240" placeholder="Make your case..." autocomplete="off"/><button class="button primary" type="submit">SEND ↗</button></form><p class="muted tiny" id="chat-hint">Only living players can participate in public discussion.</p></section>
+      </div>
+      <div id="finished-view" class="hidden"><section class="panel winner-panel"><div class="eyebrow">THE FINAL VERDICT</div><div class="winner-icon">✦</div><h2 id="winner-title">The town is safe.</h2><p id="winner-copy"></p><div id="final-players" class="player-list"></div><button id="new-room-button" class="button primary">PLAY AGAIN — NEW ROOM ↗</button></section></div>
+    </section>
+  </main>
+  <footer class="footer"><span>MAFIA: THE LAST ALIBI</span><span>TRUST IS A LIABILITY.</span></footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
