@@ -16,7 +16,8 @@ const server=http.createServer(async(req,res)=>{
     res.writeHead(response.status,Object.fromEntries(response.headers));res.end(await response.text());return;
   }
   const path=url.pathname==='/'?'/index.html':url.pathname;
-  const safe=normalize(path).replace(/^([.][.][/\\])+/, '').replace(/^[/\\]/,'');
+  let safe=normalize(path).replace(/^([.][.][/\\])+/, '').replace(/^[/\\]/,'');
+  if (safe === 'app.js') safe = 'src/app.js';
   try{const file=await readFile(join(process.cwd(),safe));res.writeHead(200,{'content-type':types[extname(safe)]||'application/octet-stream'});res.end(file)}catch{res.writeHead(404);res.end('Not found')}
 });
 server.listen(4173,'0.0.0.0',()=>console.log('Mafia local dev server: http://localhost:4173'));
