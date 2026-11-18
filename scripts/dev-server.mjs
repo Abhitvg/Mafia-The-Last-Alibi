@@ -11,7 +11,7 @@ const api=createApi({store});
 const types={'.html':'text/html','.css':'text/css','.js':'text/javascript','.svg':'image/svg+xml'};
 const server=http.createServer(async(req,res)=>{
   const url=new URL(req.url,'http://localhost');
-  if(url.pathname==='/.netlify/functions/game'){
+  if(url.pathname==='/api/game'||url.pathname==='/.netlify/functions/game'){
     const response=await api(new Request(`http://localhost${req.url}`,{method:req.method,headers:req.headers,body:['GET','HEAD'].includes(req.method)?undefined:await new Promise(resolve=>{let b='';req.on('data',c=>b+=c);req.on('end',()=>resolve(b));})}));
     res.writeHead(response.status,Object.fromEntries(response.headers));res.end(await response.text());return;
   }
